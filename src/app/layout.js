@@ -19,14 +19,17 @@ const geistMono = localFont({
 
 export default function RootLayout({ Component, children }) {
   return (
-    <html lang="en">
+      <html lang="en">
+      <head>
+        <title>Storyrow - NextJS Skeleton</title>
+      </head>
       <body className={`${geistSans.variable} ${geistMono.variable}`}>
-        <Provider store={store}>
-          <RootApp>
-            {children}
-          </RootApp>
-        </Provider>
+      <Provider store={store}>
+        <RootApp>
+          {children}
+        </RootApp>
+      </Provider>
       </body>
-    </html>
+      </html>
   );
 }

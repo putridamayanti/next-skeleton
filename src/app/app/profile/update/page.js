@@ -5,7 +5,7 @@ import {Box, CircularProgress, Grid2, styled, Tab, Typography, useMediaQuery} fr
 import MuiTabList from '@mui/lab/TabList'
 import {useRouter} from "next/navigation";
 import ProfileForm from "components/pages/profile/update/ProfileForm";
-import PasswordForm from "components/pages/profile/update/PasswordForm";
+import SecurityForm from "components/pages/profile/update/SecurityForm";
 import ConnectionForm from "components/pages/profile/update/ConnectionForm";
 import {TabContext, TabPanel} from "@mui/lab";
 import {ConnectWithoutContactRounded, PersonRounded, SecurityRounded} from "@mui/icons-material";
@@ -45,16 +45,16 @@ export default function Update() {
 
     const tabs = [
         {label: 'Profile', icon: PersonRounded, panel: <ProfileForm/>},
-        {label: 'Security', icon: SecurityRounded, panel: <PasswordForm/>},
+        {label: 'Security', icon: SecurityRounded, panel: <SecurityForm/>},
         {label: 'Connections', icon: ConnectWithoutContactRounded, panel: <ConnectionForm/>},
     ];
 
     return (
         <Grid2 container spacing={6}>
-            <Grid2 item xs={12}>
+            <Grid2 size={{ xs: 12, lg: 12 }}>
                 <TabContext value={activeTab}>
                     <Grid2 container spacing={6}>
-                        <Grid2 item xs={12}>
+                        <Grid2 size={{ xs: 12, lg: 12 }}>
                             <TabList
                                 variant='scrollable'
                                 scrollButtons='auto'
@@ -75,7 +75,7 @@ export default function Update() {
                                 ))}
                             </TabList>
                         </Grid2>
-                        <Grid2 item xs={12}>
+                        <Grid2 size={{ xs: 12, lg: 12 }}>
                             <TabPanel sx={{ p: 0 }} value={activeTab}>
                                 {tabs[activeTab].panel}
                             </TabPanel>

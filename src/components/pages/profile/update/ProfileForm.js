@@ -1,7 +1,20 @@
-import {Box, Button, Card, CardContent, CardHeader, Divider, Grid2, styled, Typography} from "@mui/material";
+import {
+    Box,
+    Button,
+    Card,
+    CardContent,
+    CardHeader, Dialog, DialogActions, DialogContent,
+    Divider,
+    Grid2, InputAdornment,
+    MenuItem, Stack,
+    styled,
+    Typography
+} from "@mui/material";
 import {useState} from "react";
 import {useFormik} from "formik";
 import Image from "next/image";
+import {ErrorRounded} from "@mui/icons-material";
+import CustomTextField from "components/form/CustomTextField";
 
 const initialData = {
     state: '',
@@ -79,7 +92,7 @@ export default function ProfileForm() {
 
     const handleInputImageReset = () => {
         setInputValue('')
-        setImgSrc('/images/avatars/15.png')
+        setImgSrc('/images/avatar.svg')
     }
 
     const handleFormChange = (field, value) => {
@@ -98,15 +111,16 @@ export default function ProfileForm() {
                     <CardHeader title='Profile Details' />
                     <form onSubmit={formik.handleSubmit}>
                         <CardContent sx={{ pt: 0 }}>
-                            <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                            <Stack direction="row" alignItems="center" spacing={3}>
                                 <Image
+                                    width={100}
+                                    height={100}
                                     src={imgSrc}
                                     alt={'profile'}
                                     style={{
-                                        borderRadius: 10,
+                                        borderRadius: 2,
                                         background: '#FFFFFF'
                                     }}/>
-                                {/*<ImgStyled src={imgSrc} alt='Profile Pic' />*/}
                                 <div>
                                     <ButtonStyled component='label' variant='contained' htmlFor='account-settings-upload-image'>
                                         Upload New Photo
@@ -124,12 +138,12 @@ export default function ProfileForm() {
                                     </ResetButtonStyled>
                                     <Typography sx={{ mt: 4, color: 'text.disabled' }}>Allowed PNG or JPEG. Max size of 800K.</Typography>
                                 </div>
-                            </Box>
+                            </Stack>
                         </CardContent>
                         <Divider />
                         <CardContent>
                             <Grid2 container spacing={5}>
-                                <Grid2 item xs={12} sm={6}>
+                                <Grid2 size={{ xs: 12, sm: 6, lg: 6 }}>
                                     <CustomTextField
                                         fullWidth
                                         label='First Name'
@@ -138,7 +152,7 @@ export default function ProfileForm() {
                                         onChange={e => handleFormChange('firstName', e.target.value)}
                                     />
                                 </Grid2>
-                                <Grid2 item xs={12} sm={6}>
+                                <Grid2 size={{ xs: 12, sm: 6, lg: 6 }}>
                                     <CustomTextField
                                         fullWidth
                                         label='Last Name'
@@ -147,7 +161,7 @@ export default function ProfileForm() {
                                         onChange={e => handleFormChange('lastName', e.target.value)}
                                     />
                                 </Grid2>
-                                <Grid2 item xs={12} sm={6}>
+                                <Grid2 size={{ xs: 12, sm: 6, lg: 6 }}>
                                     <CustomTextField
                                         fullWidth
                                         type='email'
@@ -157,7 +171,7 @@ export default function ProfileForm() {
                                         onChange={e => handleFormChange('email', e.target.value)}
                                     />
                                 </Grid2>
-                                <Grid2 item xs={12} sm={6}>
+                                <Grid2 size={{ xs: 12, sm: 6, lg: 6 }}>
                                     <CustomTextField
                                         fullWidth
                                         label='Organization'
@@ -166,7 +180,7 @@ export default function ProfileForm() {
                                         onChange={e => handleFormChange('organization', e.target.value)}
                                     />
                                 </Grid2>
-                                <Grid2 item xs={12} sm={6}>
+                                <Grid2 size={{ xs: 12, sm: 6, lg: 6 }}>
                                     <CustomTextField
                                         fullWidth
                                         type='number'
@@ -177,7 +191,7 @@ export default function ProfileForm() {
                                         InputProps={{ startAdornment: <InputAdornment position='start'>US (+1)</InputAdornment> }}
                                     />
                                 </Grid2>
-                                <Grid2 item xs={12} sm={6}>
+                                <Grid2 size={{ xs: 12, sm: 6, lg: 6 }}>
                                     <CustomTextField
                                         fullWidth
                                         label='Address'
@@ -186,7 +200,7 @@ export default function ProfileForm() {
                                         onChange={e => handleFormChange('address', e.target.value)}
                                     />
                                 </Grid2>
-                                <Grid2 item xs={12} sm={6}>
+                                <Grid2 size={{ xs: 12, sm: 6, lg: 6 }}>
                                     <CustomTextField
                                         fullWidth
                                         label='State'
@@ -195,7 +209,7 @@ export default function ProfileForm() {
                                         onChange={e => handleFormChange('state', e.target.value)}
                                     />
                                 </Grid2>
-                                <Grid2 item xs={12} sm={6}>
+                                <Grid2 size={{ xs: 12, sm: 6, lg: 6 }}>
                                     <CustomTextField
                                         fullWidth
                                         type='number'
@@ -205,7 +219,7 @@ export default function ProfileForm() {
                                         onChange={e => handleFormChange('zipCode', e.target.value)}
                                     />
                                 </Grid2>
-                                <Grid2 item xs={12} sm={6}>
+                                <Grid2 size={{ xs: 12, sm: 6, lg: 6 }}>
                                     <CustomTextField
                                         select
                                         fullWidth
@@ -223,7 +237,7 @@ export default function ProfileForm() {
                                         <MenuItem value='united-states'>United States</MenuItem>
                                     </CustomTextField>
                                 </Grid2>
-                                <Grid2 item xs={12} sm={6}>
+                                <Grid2 size={{ xs: 12, sm: 6, lg: 6 }}>
                                     <CustomTextField
                                         select
                                         fullWidth
@@ -241,7 +255,7 @@ export default function ProfileForm() {
                                         <MenuItem value='portuguese'>Portuguese</MenuItem>
                                     </CustomTextField>
                                 </Grid2>
-                                <Grid2 item xs={12} sm={6}>
+                                <Grid2 size={{ xs: 12, sm: 6, lg: 6 }}>
                                     <CustomTextField
                                         select
                                         fullWidth
@@ -271,7 +285,7 @@ export default function ProfileForm() {
                                         <MenuItem value='gmt-04-clp'>(GMT-04:00) Caracas, La Paz</MenuItem>
                                     </CustomTextField>
                                 </Grid2>
-                                <Grid2 item xs={12} sm={6}>
+                                <Grid2 size={{ xs: 12, sm: 6, lg: 6 }}>
                                     <CustomTextField
                                         select
                                         fullWidth
@@ -304,49 +318,49 @@ export default function ProfileForm() {
             </Grid2>
 
             {/* Delete Account Card */}
-            <Grid2 item xs={12}>
-                <Card>
-                    <CardHeader title='Delete Account' />
-                    <CardContent>
-                        <form onSubmit={handleSubmit(onSubmit)}>
-                            <Box sx={{ mb: 4 }}>
-                                <FormControl>
-                                    <Controller
-                                        name='checkbox'
-                                        control={control}
-                                        rules={{ required: true }}
-                                        render={({ field }) => (
-                                            <FormControlLabel
-                                                label='I confirm my account deactivation'
-                                                sx={{ '& .MuiTypography-root': { color: errors.checkbox ? 'error.main' : 'text.secondary' } }}
-                                                control={
-                                                    <Checkbox
-                                                        {...field}
-                                                        size='small'
-                                                        name='validation-basic-checkbox'
-                                                        sx={errors.checkbox ? { color: 'error.main' } : null}
-                                                    />
-                                                }
-                                            />
-                                        )}
-                                    />
-                                    {errors.checkbox && (
-                                        <FormHelperText
-                                            id='validation-basic-checkbox'
-                                            sx={{ mx: 0, color: 'error.main', fontSize: theme => theme.typography.body2.fontSize }}
-                                        >
-                                            Please confirm you want to delete account
-                                        </FormHelperText>
-                                    )}
-                                </FormControl>
-                            </Box>
-                            <Button variant='contained' color='error' type='submit' disabled={errors.checkbox !== undefined}>
-                                Deactivate Account
-                            </Button>
-                        </form>
-                    </CardContent>
-                </Card>
-            </Grid2>
+            {/*<Grid2 item xs={12}>*/}
+            {/*    <Card>*/}
+            {/*        <CardHeader title='Delete Account' />*/}
+            {/*        <CardContent>*/}
+            {/*            <form onSubmit={handleSubmit(onSubmit)}>*/}
+            {/*                <Box sx={{ mb: 4 }}>*/}
+            {/*                    <FormControl>*/}
+            {/*                        <Controller*/}
+            {/*                            name='checkbox'*/}
+            {/*                            control={control}*/}
+            {/*                            rules={{ required: true }}*/}
+            {/*                            render={({ field }) => (*/}
+            {/*                                <FormControlLabel*/}
+            {/*                                    label='I confirm my account deactivation'*/}
+            {/*                                    sx={{ '& .MuiTypography-root': { color: errors.checkbox ? 'error.main' : 'text.secondary' } }}*/}
+            {/*                                    control={*/}
+            {/*                                        <Checkbox*/}
+            {/*                                            {...field}*/}
+            {/*                                            size='small'*/}
+            {/*                                            name='validation-basic-checkbox'*/}
+            {/*                                            sx={errors.checkbox ? { color: 'error.main' } : null}*/}
+            {/*                                        />*/}
+            {/*                                    }*/}
+            {/*                                />*/}
+            {/*                            )}*/}
+            {/*                        />*/}
+            {/*                        {errors.checkbox && (*/}
+            {/*                            <FormHelperText*/}
+            {/*                                id='validation-basic-checkbox'*/}
+            {/*                                sx={{ mx: 0, color: 'error.main', fontSize: theme => theme.typography.body2.fontSize }}*/}
+            {/*                            >*/}
+            {/*                                Please confirm you want to delete account*/}
+            {/*                            </FormHelperText>*/}
+            {/*                        )}*/}
+            {/*                    </FormControl>*/}
+            {/*                </Box>*/}
+            {/*                <Button variant='contained' color='error' type='submit' disabled={errors.checkbox !== undefined}>*/}
+            {/*                    Deactivate Account*/}
+            {/*                </Button>*/}
+            {/*            </form>*/}
+            {/*        </CardContent>*/}
+            {/*    </Card>*/}
+            {/*</Grid2>*/}
 
             {/* Deactivate Account Dialogs */}
             <Dialog fullWidth maxWidth='xs' open={open} onClose={handleClose}>
@@ -367,7 +381,7 @@ export default function ProfileForm() {
                             '& svg': { mb: 6, color: 'warning.main' }
                         }}
                     >
-                        <Icon icon='tabler:alert-circle' fontSize='5.5rem' />
+                        <ErrorRounded/>
                         <Typography>Are you sure you would like to cancel your subscription?</Typography>
                     </Box>
                 </DialogContent>
@@ -405,7 +419,7 @@ export default function ProfileForm() {
                             }
                         }}
                     >
-                        <Icon fontSize='5.5rem' icon={userInput === 'yes' ? 'tabler:circle-check' : 'tabler:circle-x'} />
+                        {/*<Icon fontSize='5.5rem' icon={userInput === 'yes' ? 'tabler:circle-check' : 'tabler:circle-x'} />*/}
                         <Typography variant='h4' sx={{ mb: 5 }}>
                             {userInput === 'yes' ? 'Deleted!' : 'Cancelled'}
                         </Typography>

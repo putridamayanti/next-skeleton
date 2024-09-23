@@ -1,14 +1,16 @@
 import {Stack} from "@mui/material";
 import Image from "next/image";
 
-export default function Logo() {
+export default function Logo(props) {
+    const { width, height } = props;
+
     return (
         <Stack justifyContent="center" alignItems="center">
             <Image
                 src="/images/logos/logo.svg"
                 alt="logo"
-                width={140}
-                height={50}
+                width={width || 140}
+                height={height || 50}
                 priority/>
         </Stack>
     )

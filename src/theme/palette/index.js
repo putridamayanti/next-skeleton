@@ -3,7 +3,7 @@ const palette = (mode = 'light') => {
     const lightColor = '47, 43, 61'
     const darkColor = '208, 212, 241'
     const darkPaperBgColor = '#2F3349'
-    const mainColor = mode === 'light' ? lightColor : darkColor
+    const mainColor = lightColor
 
     const defaultBgColor = () => {
         if (mode === 'light') {
@@ -14,7 +14,6 @@ const palette = (mode = 'light') => {
     return {
         customColors: {
             dark: `rgba(${darkColor}, 1)`,
-            main: `rgba(${mainColor}, 1)`,
             light: lightColor,
             lightPaperBg: whiteColor,
             darkPaperBg: darkPaperBgColor,
