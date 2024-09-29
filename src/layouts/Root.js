@@ -6,6 +6,7 @@ import {CssBaseline, ThemeProvider} from "@mui/material";
 import Theme from "theme";
 import AppLayout from "layouts/app";
 import AuthLayout from "layouts/auth";
+import {SessionProvider} from "next-auth/react";
 
 export default function RootApp({ children }) {
     const pathname = usePathname();
@@ -23,10 +24,12 @@ export default function RootApp({ children }) {
     // }, []);
 
     return (
-        <Theme mode={themeSetting.mode}>
-            <Layout>
-                {children}
-            </Layout>
-        </Theme>
+        <SessionProvider>
+            <Theme mode={themeSetting.mode}>
+                <Layout>
+                    {children}
+                </Layout>
+            </Theme>
+        </SessionProvider>
     )
 }

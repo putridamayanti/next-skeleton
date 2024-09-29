@@ -14,7 +14,7 @@ import {useDispatch, useSelector} from "store";
 import SidebarItems from "layouts/app/components/sidebar/SidebarItems";
 import {ChevronRightRounded} from "@mui/icons-material";
 import {ThemeActions} from "store/slices/ThemeSlice";
-import {HexToRGBA} from "utils/theme";
+import MenuNavLink from "layouts/app/components/sidebar/styles/MenuNavLink";
 
 const MenuItemTextWrapper = styled(Box)(({ theme }) => ({
     width: '100%',
@@ -25,16 +25,16 @@ const MenuItemTextWrapper = styled(Box)(({ theme }) => ({
     transition: 'opacity .25s ease-in-out',
     // ...(themeConfig.menuTextTruncate && { overflow: 'hidden' })
 }))
-
-const MenuNavLink = styled(ListItemButton)(({ theme }) => ({
-    width: '100%',
-    height: 45,
-    borderRadius: theme.shape.borderRadius,
-    transition: 'padding-left .25s ease-in-out, padding-right .25s ease-in-out',
-    '&:hover': {
-        backgroundColor: theme.palette.action.hover
-    },
-}));
+//
+// const MenuNavLink = styled(ListItemButton)(({ theme }) => ({
+//     width: '100%',
+//     height: 45,
+//     borderRadius: theme.shape.borderRadius,
+//     transition: 'padding-left .25s ease-in-out, padding-right .25s ease-in-out',
+//     '&:hover': {
+//         backgroundColor: theme.palette.action.hover
+//     },
+// }));
 
 export default function SidebarGroup(props) {
     const { item, parent, themeConfig } = props;
@@ -79,13 +79,12 @@ export default function SidebarGroup(props) {
                             fontSize: themeConfig.sidebarIconSize,
                             ...(parent ? { fontSize: themeConfig.sidebarCircleIconSize } : {})
                         },
-                        // ...(parent && item.children ? { ml: 1.5, mr: 3.5 } : {})
                     }}
                 >
                     <Icon/>
                 </ListItemIcon>
                 <MenuItemTextWrapper sx={{ ...menuGroupCollapsedStyles }}>
-                    <Typography variant="subtitle2" noWrap={true}>
+                    <Typography noWrap={true}>
                         {item.title}
                     </Typography>
                     <Box
@@ -119,84 +118,6 @@ export default function SidebarGroup(props) {
                     </Box>
                 </MenuItemTextWrapper>
             </MenuNavLink>
-            {/*<ListItemButton*/}
-            {/*    sx={{*/}
-            {/*        py: 2,*/}
-            {/*        borderRadius: 1,*/}
-            {/*        // width: theme => `calc(100% - ${theme.spacing(3.5 * 2)})`,*/}
-            {/*        transition: 'padding-left .25s ease-in-out, padding-right .25s ease-in-out',*/}
-            {/*        // px: navCollapsed && !navHover ? (collapsedNavWidth - navigationBorderWidth - 22 - 28) / 8 : 4,*/}
-            {/*        '&:hover': {*/}
-            {/*            backgroundColor: 'action.hover'*/}
-            {/*        },*/}
-            {/*        '& .MuiTypography-root, & :not(.menu-item-meta) > svg': {*/}
-            {/*            color: 'text.secondary'*/}
-            {/*        },*/}
-            {/*        '&.Mui-selected': {*/}
-            {/*            backgroundColor: 'action.selected',*/}
-            {/*            '&:hover': {*/}
-            {/*                backgroundColor: 'action.selected'*/}
-            {/*            },*/}
-            {/*            '& .MuiTypography-root, & :not(.menu-item-meta) > svg': {*/}
-            {/*                color: 'text.primary'*/}
-            {/*            },*/}
-            {/*            '& .menu-item-meta > svg': {*/}
-            {/*                color: 'text.secondary'*/}
-            {/*            },*/}
-            {/*            '&.Mui-focusVisible': {*/}
-            {/*                backgroundColor: 'action.focus',*/}
-            {/*                '&:hover': {*/}
-            {/*                    backgroundColor: 'action.focus'*/}
-            {/*                }*/}
-            {/*            }*/}
-            {/*        }*/}
-            {/*    }}*/}
-            {/*>*/}
-            {/*    <ListItemIcon*/}
-            {/*        sx={{*/}
-            {/*            transition: 'margin .25s ease-in-out',*/}
-            {/*            // ...(parent && navCollapsed && !navHover ? {} : { mr: 2 }),*/}
-            {/*            // ...(navCollapsed && !navHover ? { mr: 0 } : {}),*/}
-            {/*            ...(parent && item.children ? { ml: 1.5, mr: 3.5 } : {})*/}
-            {/*        }}*/}
-            {/*    >*/}
-            {/*        <Icon/>*/}
-            {/*    </ListItemIcon>*/}
-            {/*    <MenuItemTextWrapper sx={{ ...menuGroupCollapsedStyles }}>*/}
-            {/*        <Typography variant="subtitle2" noWrap={true}>*/}
-            {/*            {item.title}*/}
-            {/*        </Typography>*/}
-            {/*        <Box*/}
-            {/*            className='menu-item-meta'*/}
-            {/*            sx={{*/}
-            {/*                display: 'flex',*/}
-            {/*                alignItems: 'center',*/}
-            {/*                '& svg': {*/}
-            {/*                    color: 'text.disabled',*/}
-            {/*                    transition: 'transform .25s ease-in-out',*/}
-            {/*                    ...(groupActive.includes(item.title) && {*/}
-            {/*                        transform: 'rotate(-90deg)'*/}
-            {/*                    })*/}
-            {/*                }*/}
-            {/*            }}*/}
-            {/*        >*/}
-            {/*            {item.badgeContent ? (*/}
-            {/*                <Chip*/}
-            {/*                    size='small'*/}
-            {/*                    label={item.badgeContent}*/}
-            {/*                    color={item.badgeColor || 'primary'}*/}
-            {/*                    sx={{*/}
-            {/*                        mr: 2,*/}
-            {/*                        height: 22,*/}
-            {/*                        minWidth: 22,*/}
-            {/*                        '& .MuiChip-label': { px: 1.5, textTransform: 'capitalize' }*/}
-            {/*                    }}*/}
-            {/*                />*/}
-            {/*            ) : null}*/}
-            {/*            <ChevronRightRounded/>*/}
-            {/*        </Box>*/}
-            {/*    </MenuItemTextWrapper>*/}
-            {/*</ListItemButton>*/}
             <Collapse
                 component='ul'
                 onClick={e => e.stopPropagation()}

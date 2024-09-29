@@ -1,6 +1,6 @@
 'use client'
 
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import {
     Box, Button,
     Checkbox, Divider,
@@ -15,6 +15,11 @@ import CustomTextField from "components/form/CustomTextField";
 import Link from "next/link";
 import MuiFormControlLabel from "@mui/material/FormControlLabel";
 import {FacebookRounded, GitHub, Google, VisibilityOffRounded, VisibilityRounded, X} from "@mui/icons-material";
+import {usePathname, useRouter} from "next/navigation";
+import {useFormik} from "formik";
+import {signIn} from "next-auth/react";
+import Roles from "constants/role";
+import AuthService from "services/AuthService";
 
 const LinkStyled = styled(Link)(({ theme }) => ({
     textDecoration: 'none',
@@ -28,25 +33,46 @@ const FormControlLabel = styled(MuiFormControlLabel)(({ theme }) => ({
 }))
 
 export default function RegisterForm() {
+    const pathname = usePathname();
+    const router = useRouter();
+    const isOwner = pathname.includes('owner');
     const [values, setValues] = useState({
         password: '',
         showPassword: false
     })
 
     const theme = useTheme()
-    const { settings } = useSettings()
 
-    const { skin } = settings
-    const hidden = useMediaQuery(theme.breakpoints.down('md'))
-
-    const handleChange = prop => event => {
-        setValues({ ...values, [prop]: event.target.value })
-    }
+    const formik = useFormik({
+        initialValues: {
+            name: '',
+            email: '',
+            password: '',
+            roleCode: isOwner ? 'owner' : 'customer',
+        },
+        onSubmit: values => handleSubmit(values)
+    });
 
     const handleClickShowPassword = () => {
         setValues({ ...values, showPassword: !values.showPassword })
     }
-    const imageSource = skin === 'bordered' ? 'auth-v2-register-illustration-bordered' : 'auth-v2-register-illustration'
+    const handleSubmit = async (values) => {
+        const res = await AuthService.Register(values);
+        if (res.status === 200) {
+            return router.push('/app/dashboard');
+        }
+    };
+
+    const handleSocialLogin = async (social) => {
+        const res = await signIn(social, {
+            redirect: false,
+            role: isOwner ? Roles.owner.value : Roles.customer.value,
+        });
+
+        if (res.ok) {
+            return router.push('/app/dashboard');
+        }
+    }
 
     return (
         <>
@@ -54,31 +80,42 @@ export default function RegisterForm() {
                 <Typography variant='h3' sx={{ mb: 1.5 }}>
                     Adventure starts here 🚀
                 </Typography>
-                <Typography sx={{ color: 'text.secondary' }}>Make your app management easy and fun!</Typography>
+                <Typography sx={{ color: 'text.secondary' }}>
+                    {isOwner ? 'Manage your business booking!' : 'Make your app management easy and fun!'}
+                </Typography>
             </Box>
             <form noValidate autoComplete='off' onSubmit={e => e.preventDefault()}>
                 <CustomTextField
                     fullWidth
                     autoFocus
-                    id='username'
-                    label='Username'
-                    placeholder='John.doe'
+                    label='Full Name'
+                    name="name"
+                    placeholder='John doe'
                     sx={{ display: 'flex', mb: 4 }}
+                    onChange={formik.handleChange}
+                    value={formik.values.username}
+                    error={Boolean(formik.errors.name)}
+                    {...(formik.errors.name && { helperText: formik.errors.name })}
                 />
                 <CustomTextField
                     fullWidth
-                    type='email'
                     label='Email'
+                    name="email"
+                    placeholder='admin@vuexy.com'
                     sx={{ display: 'flex', mb: 4 }}
-                    placeholder='john.doe@gmail.com'
+                    onChange={formik.handleChange}
+                    value={formik.values.email}
+                    error={Boolean(formik.errors.email)}
+                    {...(formik.errors.email && { helperText: formik.errors.email })}
                 />
                 <CustomTextField
                     fullWidth
                     label='Password'
-                    value={values.password}
                     placeholder='············'
+                    name="password"
                     id='auth-register-v2-password'
-                    onChange={handleChange('password')}
+                    sx={{ display: 'flex', mb: 4 }}
+                    onChange={formik.handleChange}
                     type={values.showPassword ? 'text' : 'password'}
                     InputProps={{
                         endAdornment: (
@@ -94,6 +131,9 @@ export default function RegisterForm() {
                             </InputAdornment>
                         )
                     }}
+                    value={formik.values.password}
+                    error={Boolean(formik.errors.password)}
+                    {...(formik.errors.password && { helperText: formik.errors.password })}
                 />
                 <FormControlLabel
                     control={<Checkbox />}
@@ -144,7 +184,7 @@ export default function RegisterForm() {
                     >
                         <GitHub/>
                     </IconButton>
-                    <IconButton href='/' component={Link} sx={{ color: '#db4437' }} onClick={e => e.preventDefault()}>
+                    <IconButton sx={{ color: '#db4437' }} onClick={() => handleSocialLogin('google')}>
                         <Google/>
                     </IconButton>
                 </Box>

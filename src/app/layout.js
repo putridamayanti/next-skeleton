@@ -1,21 +1,9 @@
 'use client'
 
-import localFont from "next/font/local";
 import "./globals.css";
 import RootApp from "layouts/Root";
 import {Provider} from "react-redux";
 import store from "store";
-
-const geistSans = localFont({
-  src: "./fonts/GeistVF.woff",
-  variable: "--font-geist-sans",
-  weight: "100 900",
-});
-const geistMono = localFont({
-  src: "./fonts/GeistMonoVF.woff",
-  variable: "--font-geist-mono",
-  weight: "100 900",
-});
 
 export default function RootLayout({ Component, children }) {
   return (
@@ -23,7 +11,7 @@ export default function RootLayout({ Component, children }) {
       <head>
         <title>Storyrow - NextJS Skeleton</title>
       </head>
-      <body className={`${geistSans.variable} ${geistMono.variable}`}>
+      <body>
       <Provider store={store}>
         <RootApp>
           {children}

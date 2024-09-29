@@ -1,3 +1,5 @@
+'use client'
+
 import {Box, Button, Checkbox, Divider, IconButton, InputAdornment, styled, Typography, useTheme} from "@mui/material";
 import {Alert} from "@mui/lab";
 import CustomTextField from "components/form/CustomTextField";
@@ -5,8 +7,10 @@ import Link from "next/link";
 import {FacebookRounded, GitHub, Google, VisibilityOffRounded, VisibilityRounded, X} from "@mui/icons-material";
 import MuiFormControlLabel from "@mui/material/FormControlLabel";
 import {useFormik} from "formik";
-import useBackgroundColor from "hooks/useBackgroundColor";
 import {useState} from "react";
+import {signIn} from "next-auth/react";
+import {usePathname, useRouter} from "next/navigation";
+import Roles from "constants/role";
 
 const LinkStyled = styled(Link)(({ theme }) => ({
     textDecoration: 'none',
@@ -20,7 +24,9 @@ const FormControlLabel = styled(MuiFormControlLabel)(({ theme }) => ({
 }))
 export default function LoginForm() {
     const theme = useTheme();
-    // const bgColors = useBackgroundColor()
+    const pathname = usePathname();
+    const router = useRouter();
+    const isOwner = pathname.includes('owner');
     const [showPassword, setShowPassword] = useState(false)
     const [rememberMe, setRememberMe] = useState(true)
 
@@ -29,9 +35,28 @@ export default function LoginForm() {
         onSubmit: values => handleSubmit(values)
     });
 
-    const handleSubmit = (values) => {
-        console.log(values);
+    const handleSubmit = async (values) => {
+        const res = await signIn('credentials', {
+            ...values,
+            redirect: false,
+        });
+
+        if (res.ok) {
+            return router.push('/app/dashboard');
+        }
+
     };
+
+    const handleSocialLogin = async (social) => {
+        const res = await signIn(social, {
+            redirect: false,
+            role: isOwner ? Roles.owner.value : Roles.customer.value,
+        });
+
+        if (res.ok) {
+            return router.push('/app/dashboard');
+        }
+    }
 
     return (
         <>
@@ -126,6 +151,9 @@ export default function LoginForm() {
                     or
                 </Divider>
                 <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                    <Button onClick={() => handleSocialLogin('google')}>
+                        Google
+                    </Button>
                     <IconButton href='/' component={Link} sx={{ color: '#497ce2' }} onClick={e => e.preventDefault()}>
                         <FacebookRounded/>
                     </IconButton>
@@ -140,7 +168,7 @@ export default function LoginForm() {
                     >
                         <GitHub/>
                     </IconButton>
-                    <IconButton href='/' component={Link} sx={{ color: '#db4437' }} onClick={e => e.preventDefault()}>
+                    <IconButton sx={{ color: '#db4437' }} onClick={() => handleSocialLogin('google')}>
                         <Google/>
                     </IconButton>
                 </Box>

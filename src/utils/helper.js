@@ -1,4 +1,4 @@
-import {setItem} from "utils/storage";
+import AppStorage from "utils/storage";
 
 export const generateUniqueId = (length = 6) => {
     return Math.random().toString(36).substring(2, length+2);
@@ -9,7 +9,7 @@ export const getIp = () => {
         .then(response => response.json())
         .then(res => {
             if (res.status === 'success') {
-                setItem('country', res.countryCode?.toLowerCase());
+                AppStorage.setItem('country', res.countryCode?.toLowerCase());
             }
         });
 };

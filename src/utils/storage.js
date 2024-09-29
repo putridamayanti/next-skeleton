@@ -1,25 +1,41 @@
-export const setItem = (key, value) => {
-    if (typeof value === 'object') {
-        return localStorage.setItem(key, JSON.stringify(value));
-    }
+const setItem = (key, value) => {
+    if (typeof window !== 'undefined') {
+        if (typeof value === 'object') {
+            return localStorage.setItem(key, JSON.stringify(value));
+        }
 
-    return   localStorage.setItem(key, value);
+        return   localStorage.setItem(key, value);
+    }
 };
 
-export const getItem = (key) => {
-    const value = localStorage.getItem(key);
+const getItem = (key) => {
+    if (typeof window !== 'undefined') {
+        const value = localStorage.getItem(key);
 
-    if (value) {
-        try {
-            return JSON.parse(value);
-        } catch (error) {
-            return value;
+        if (value) {
+            try {
+                return JSON.parse(value);
+            } catch (error) {
+                return value;
+            }
         }
+
+        return null;
     }
 
     return null;
 };
 
-export const removeItem = (key) => {
-    return localStorage.removeItem(key);
+const removeItem = (key) => {
+    if (typeof window !== 'undefined') {
+        return localStorage.removeItem(key);
+    }
 };
+
+const AppStorage = {
+    setItem,
+    getItem,
+    removeItem
+};
+
+export default AppStorage;

@@ -54,7 +54,7 @@ export default function AuthLayout(props) {
                             src={`/images/illustrations/${illustration}.png`}
                             alt={illustration}
                             fill
-                            objectFit="contain"/>
+                            style={{ objectFit: "contain" }}/>
                     </Box>
                 </LeftWrapper>
             ) : null}
