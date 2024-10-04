@@ -1,4 +1,4 @@
-import {CircleRounded, DashboardRounded, SettingsRounded} from "@mui/icons-material";
+import {CircleRounded, DashboardRounded, PeopleRounded, SettingsRounded} from "@mui/icons-material";
 import {generateUniqueId} from "utils/helper";
 
 const Menus = [
@@ -6,7 +6,13 @@ const Menus = [
         id: generateUniqueId(),
         title: 'Dashboard',
         icon: DashboardRounded,
-        href: '/',
+        href: '',
+    },
+    {
+        id: generateUniqueId(),
+        title: 'User',
+        icon: PeopleRounded,
+        href: '/user',
     },
     {
         id: generateUniqueId(),
