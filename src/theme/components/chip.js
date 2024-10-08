@@ -11,14 +11,19 @@ const Chip = () => {
           ...(ownerState.size === 'medium' && {
             height: 30
           }),
+          borderRadius: 10,
           '&.MuiChip-rounded': {
-            borderRadius: 4
+            borderRadius: 16
           }
         }),
         outlined: ({ theme }) => ({
           '&.MuiChip-colorDefault': {
             borderColor: `rgba(${theme.palette.background.paper}, 0.2)`
           }
+        }),
+        sizeSmall: ({ theme }) => ({
+          fontSize: theme.typography.caption.fontSize,
+          borderRadius: 7,
         }),
         labelSmall: ({ theme }) => ({
           paddingLeft: theme.spacing(2.5),
