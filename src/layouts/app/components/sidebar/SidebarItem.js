@@ -1,6 +1,6 @@
 import {Box, Chip, ListItem, ListItemIcon, styled, Typography} from "@mui/material";
 import Link from "next/link";
-import {usePathname} from "next/navigation";
+import {usePathname, useRouter} from "next/navigation";
 import {CircleRounded} from "@mui/icons-material";
 import MenuNavLink from "layouts/app/components/sidebar/styles/MenuNavLink";
 
@@ -16,23 +16,25 @@ const MenuItemTextMetaWrapper = styled(Box)(({ theme }) => ({
 export default function SidebarItem(props) {
     const { item, parent, themeConfig } = props;
     const pathname = usePathname();
+    const router = useRouter();
 
     const Icon = item?.icon;
+    const isActive = `/app${item.href}` === pathname;
 
     return (
         <ListItem sx={{
             ...(parent ? { p: 0 } : { mt: 0 })
         }}>
             <MenuNavLink
-                component={Link}
                 {...(item.disabled && { tabIndex: -1 })}
-                className={pathname === item.href ? 'active' : ''}
-                href={item.path === undefined ? '/' : `${item.path}`}
+                className={isActive ? 'active' : ''}
                 {...(item.openInNewTab ? { target: '_blank' } : null)}
                 onClick={e => {
-                    if (item.path === undefined) {
+                    if (item.href === undefined) {
                         e.preventDefault()
                         e.stopPropagation()
+                    } else {
+                        router.push(`/app${item.href}`);
                     }
                 }}
                 sx={{
@@ -40,7 +42,6 @@ export default function SidebarItem(props) {
                     ...(parent && { pl: 4, py: 0 }),
                 }}
             >
-
                 <ListItemIcon
                     sx={{
                         minWidth: themeConfig.sidebarIconWidth,

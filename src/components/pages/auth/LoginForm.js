@@ -11,6 +11,7 @@ import {useState} from "react";
 import {signIn} from "next-auth/react";
 import {usePathname, useRouter} from "next/navigation";
 import Roles from "constants/role";
+import AuthService from "services/AuthService";
 
 const LinkStyled = styled(Link)(({ theme }) => ({
     textDecoration: 'none',
@@ -31,20 +32,17 @@ export default function LoginForm() {
     const [rememberMe, setRememberMe] = useState(true)
 
     const formik = useFormik({
-        initialValues: { email: '', password: '' },
+        initialValues: { email: 'admin@storyrow.io', password: 'admin' },
         onSubmit: values => handleSubmit(values)
     });
 
     const handleSubmit = async (values) => {
-        const res = await signIn('credentials', {
-            ...values,
-            redirect: false,
-        });
-
-        if (res.ok) {
-            return router.push('/app/dashboard');
-        }
-
+        return AuthService.Login(values)
+            .then(res => {
+                if (res.status === 200) {
+                    return router.push('/app');
+                }
+            })
     };
 
     const handleSocialLogin = async (social) => {
@@ -54,7 +52,7 @@ export default function LoginForm() {
         });
 
         if (res.ok) {
-            return router.push('/app/dashboard');
+            return router.push('/app');
         }
     }
 

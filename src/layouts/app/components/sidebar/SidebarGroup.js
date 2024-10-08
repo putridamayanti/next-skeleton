@@ -61,7 +61,7 @@ export default function SidebarGroup(props) {
         //     toggleActiveGroup(item, parent)
         // }
     }
-    console.log('Current item group', item, groupActive.includes(item.title))
+
     return (
         <ListItem
             disablePadding

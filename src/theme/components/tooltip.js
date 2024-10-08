@@ -7,7 +7,7 @@ const Tooltip = () => {
       styleOverrides: {
         tooltip: ({ theme }) => ({
           padding: theme.spacing(1, 3),
-          fontSize: theme.typography.body1.fontSize,
+          fontSize: theme.typography.caption.fontSize,
           backgroundColor:
             theme.palette.mode === 'light'
               ? `rgba(${theme.palette.background.paper}, 0.9)`

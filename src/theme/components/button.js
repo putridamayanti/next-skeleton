@@ -152,6 +152,7 @@ const Button = () => {
       styleOverrides: {
         root: ({ ownerState, theme }) => ({
           minWidth: 50,
+          borderRadius: '8px',
           textTransform: 'none',
           '&:not(.Mui-disabled):active': {
             transform: 'scale(0.98)'

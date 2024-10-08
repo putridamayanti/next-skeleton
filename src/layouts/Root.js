@@ -2,7 +2,6 @@
 
 import {usePathname} from "next/navigation";
 import {useSelector} from "store";
-import {CssBaseline, ThemeProvider} from "@mui/material";
 import Theme from "theme";
 import AppLayout from "layouts/app";
 import AuthLayout from "layouts/auth";
