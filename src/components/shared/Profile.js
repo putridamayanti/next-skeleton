@@ -3,6 +3,7 @@ import {Avatar, Badge, Box, Divider, IconButton, Menu, MenuItem, styled, Typogra
 import {useSelector} from "store";
 import {useRouter} from "next/navigation";
 import {LogoutRounded, PersonRounded, SettingsRounded} from "@mui/icons-material";
+import AuthService from "services/AuthService";
 
 const MenuItemStyled = styled(MenuItem)(({ theme }) => ({
     '&:hover .MuiBox-root, &:hover .MuiBox-root svg': {
@@ -54,8 +55,9 @@ export default function Profile() {
     }
 
     const handleLogout = () => {
-        // logout()
-        handleDropdownClose()
+        AuthService.Logout();
+        // handleDropdownClose();
+        router.push('/');
     }
 
     return (

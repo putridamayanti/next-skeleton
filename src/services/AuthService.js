@@ -18,10 +18,14 @@ const Register = (params) => {
         });
 };
 
+const Logout = () => {
+    return AppStorage.removeItem('x-token');
+};
 
 const AuthService = {
     Login,
-    Register
+    Register,
+    Logout
 }
 
 export default AuthService;
