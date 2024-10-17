@@ -6,7 +6,7 @@ import React from "react";
 const filter = createFilterOptions();
 
 export default function CustomAutocomplete(props) {
-    const { options, onChange, value } = props;
+    const { label, options, onChange, value } = props;
 
     return (
         <Autocomplete
@@ -61,7 +61,7 @@ export default function CustomAutocomplete(props) {
             sx={{ width: 300 }}
             freeSolo
             renderInput={(params) => (
-                <CustomTextField {...params} label="Labels" />
+                <CustomTextField {...params} label={label} />
             )}
         />
     )

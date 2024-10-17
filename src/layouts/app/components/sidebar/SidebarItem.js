@@ -23,6 +23,7 @@ export default function SidebarItem(props) {
 
     return (
         <ListItem sx={{
+            py: 0.5,
             ...(parent ? { p: 0 } : { mt: 0 })
         }}>
             <MenuNavLink

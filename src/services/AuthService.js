@@ -18,6 +18,10 @@ const Register = (params) => {
         });
 };
 
+const GetProfile = () => {
+    return Api.Instance.get('/profile');
+};
+
 const Logout = () => {
     return AppStorage.removeItem('x-token');
 };
@@ -25,6 +29,7 @@ const Logout = () => {
 const AuthService = {
     Login,
     Register,
+    GetProfile,
     Logout
 }
 

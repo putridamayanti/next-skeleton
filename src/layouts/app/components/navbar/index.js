@@ -3,7 +3,7 @@ import MuiAppBar from '@mui/material/AppBar'
 import MuiToolbar from '@mui/material/Toolbar'
 import {HexToRGBA} from "utils/theme";
 import AppNavbarContent from "layouts/app/components/navbar/AppNavbarContent";
-import {useDispatch} from "store";
+import {useDispatch, useSelector} from "store";
 
 const AppBar = styled(MuiAppBar)(({ theme }) => ({
     transition: 'none',
@@ -32,6 +32,7 @@ const Toolbar = styled(MuiToolbar)(({ theme }) => ({
 export default function AppNavbar(props) {
     const { toggleNavVisibility } = props;
     const theme = useTheme();
+    const {sidebarWidth, isSidebarCollapsed} = useSelector(state => state.theme);
 
     const appBarBlur = true;
 
@@ -61,13 +62,13 @@ export default function AppNavbar(props) {
             color='default'
             className='layout-navbar'
             sx={{
-                transition: theme.transitions.create(['margin', 'width'], {
-                    easing: theme.transitions.easing.sharp,
-                    duration: theme.transitions.duration.leavingScreen,
-                }),
+                width: isSidebarCollapsed ? '100%' : `calc(100vw - ${sidebarWidth}px)`,
+                // transition: theme.transitions.create(['margin', 'width'], {
+                //     easing: theme.transitions.easing.sharp,
+                //     duration: theme.transitions.duration.leavingScreen,
+                // }),
                 ...appBarBlurEffect
-            }}
-            position={'sticky'}>
+            }}>
             <Toolbar
                 className='navbar-content-container'
                 sx={{
@@ -75,9 +76,6 @@ export default function AppNavbar(props) {
                     minHeight: theme => `${theme.mixins.toolbar.minHeight}px !important`,
                     backgroundColor: theme => HexToRGBA(theme.palette.background.paper, appBarBlur ? 0.95 : 1),
                     boxShadow: 2,
-                    // ...(contentWidth === 'boxed' && {
-                    //     '@media (min-width:1440px)': { maxWidth: theme => `calc(1440px - ${theme.spacing(6 * 2)})` }
-                    // })
                 }}>
                 <IconButton onClick={toggleNavVisibility}>
                     <svg width="20" height="18" viewBox="0 0 20 18" fill={theme.palette.text.secondary} xmlns="http://www.w3.org/2000/svg">

@@ -30,6 +30,7 @@ export default function LoginForm() {
     const isOwner = pathname.includes('owner');
     const [showPassword, setShowPassword] = useState(false)
     const [rememberMe, setRememberMe] = useState(true)
+    const [loading, setLoading] = useState(false);
 
     const formik = useFormik({
         initialValues: { email: 'admin@storyrow.io', password: 'admin' },
@@ -37,8 +38,10 @@ export default function LoginForm() {
     });
 
     const handleSubmit = async (values) => {
+        setLoading(true);
         return AuthService.Login(values)
             .then(res => {
+                setLoading(false);
                 if (res.status === 200) {
                     return router.push('/app');
                 }
@@ -50,10 +53,6 @@ export default function LoginForm() {
             redirect: false,
             role: isOwner ? Roles.owner.value : Roles.customer.value,
         });
-
-        if (res.ok) {
-            return router.push('/app');
-        }
     }
 
     return (

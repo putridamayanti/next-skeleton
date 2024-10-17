@@ -4,7 +4,7 @@ const setItem = (key, value) => {
             return localStorage.setItem(key, JSON.stringify(value));
         }
 
-        return   localStorage.setItem(key, value);
+        return localStorage.setItem(key, value);
     }
 };
 

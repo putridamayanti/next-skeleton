@@ -7,3 +7,9 @@ export const DefaultSort = {
     name: { name: 'Name', value: 'name,1' },
     ...BasicSort
 };
+
+export const SettingTypes = {
+    general: { name: 'General', value: 'general' },
+    storage: { name: 'Storage', value: 'storage' },
+    payment: { name: 'Payment', value: 'payment' }
+};

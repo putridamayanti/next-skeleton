@@ -2,50 +2,41 @@ import NextAuth from "next-auth";
 import GoogleProvider from "next-auth/providers/google";
 import CredentialsProvider from "next-auth/providers/credentials"
 import AuthService from "services/AuthService";
+import AppStorage from "utils/storage";
 
 export const authOptions = {
     providers: [
-        CredentialsProvider({
-            name: "Credentials",
-            credentials: {
-                email: { label: "Email", type: "text" },
-                password: { label: "Password", type: "password" }
-            },
-            async authorize(credentials) {
-                return null;
-            }
-        }),
         GoogleProvider({
             clientId: process.env.GOOGLE_CLIENT_ID ?? "",
             clientSecret: process.env.GOOGLE_CLIENT_SECRET ?? "",
         }),
     ],
     callbacks: {
-        async signIn({ user, account, role, credentials }) {
+        async signIn({ user, account, role }) {
             const params = {
                 email: user.email,
                 roleCode: role
             };
 
-            if (credentials) {
-                params.email = credentials.email;
-                params.password = credentials.password;
-            }
-
             if (account.provider === 'google') {
                 params.image = user.image;
                 params.name = user.name;
+                params.isSocial = true;
                 params.social = 'google';
                 params.socialId = user.id;
             }
 
             try {
                 const res = await AuthService.Login(params);
+                if (res.status === 200 && res?.data?.data?.token) {
+                    return `/dashboard?token=${encodeURIComponent(res.data?.data?.token)}`;
+                }
+
                 return res.status === 200;
             } catch (e) {
                 return false;
             }
-        },
+            }
     },
 };
 

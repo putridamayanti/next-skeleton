@@ -49,10 +49,8 @@ const notifications = [
 export default function AppNavbarContent() {
     return (
         <Stack spacing={1} direction="row" alignItems="center">
-            {/*<Language />*/}
             <NotificationDropdown notifications={notifications}/>
             <Profile />
-            {/*<Mode/>*/}
         </Stack>
     )
 }

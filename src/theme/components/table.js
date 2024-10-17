@@ -51,6 +51,7 @@ const Table = () => {
     MuiTableCell: {
       styleOverrides: {
         root: ({ theme }) => ({
+          fontSize: 14,
           borderBottom: `1px solid ${theme.palette.divider}`
         }),
         paddingCheckbox: ({ theme }) => ({

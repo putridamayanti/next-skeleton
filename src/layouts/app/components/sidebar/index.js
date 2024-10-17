@@ -10,6 +10,7 @@ import SidebarItem from "layouts/app/components/sidebar/SidebarItem";
 import SidebarGroup from "layouts/app/components/sidebar/SidebarGroup";
 import SidebarItems from "layouts/app/components/sidebar/SidebarItems";
 import {ThemeActions} from "store/slices/ThemeSlice";
+import {useEffect} from "react";
 
 const MenuHeaderWrapper = styled(Box)(({ theme, width }) => ({
     display: 'flex',
@@ -23,20 +24,25 @@ const MenuHeaderWrapper = styled(Box)(({ theme, width }) => ({
 export default function Sidebar() {
     const dispatch = useDispatch();
     const themeConfig = useSelector(state => state.theme);
-    const smDown = useMediaQuery(theme => theme.breakpoints.down('sm'));
+    const hidden = useMediaQuery(theme => theme.breakpoints.down('lg'));
     const { sidebarWidth, isSidebarCollapsed } = useSelector(state => state.theme);
-    const variant = isSidebarCollapsed ? 'persistent' : smDown ? 'temporary' : 'permanent';
+    const variant = isSidebarCollapsed ? 'persistent' : hidden ? 'temporary' : 'permanent';
+
+    useEffect(() => {
+        if (hidden) {
+            dispatch(ThemeActions.setSidebarCollapse(true));
+        }
+    }, []);
 
     return (
         <Drawer
             open={!isSidebarCollapsed}
+            onClose={() => dispatch(ThemeActions.setSidebarCollapse(false))}
             variant={variant}
             sx={{
                 width: isSidebarCollapsed ? 0 : sidebarWidth,
                 flexShrink: 0,
                 '& .MuiDrawer-paper': {
-                    // width: drawerWidth,
-                    // boxSizing: 'border-box',
                     border: 'none',
                     boxShadow: 2,
                 },
@@ -45,7 +51,7 @@ export default function Sidebar() {
                 <Link href={'/'}>
                     <Logo/>
                 </Link>
-                {smDown && (
+                {hidden && (
                     <IconButton onClick={() => dispatch(ThemeActions.setSidebarCollapse(!isSidebarCollapsed))}>
                         <CloseRounded/>
                     </IconButton>

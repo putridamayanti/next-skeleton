@@ -20,7 +20,7 @@ export default function RootLayout({ Component, children }) {
           revalidateOnReconnect: false,
           // refreshWhenOffline: false,
           // refreshWhenHidden: false,
-          // refreshInterval: 0,
+          refreshInterval: 0,
       }}>
           <Provider store={store}>
               <RootApp>

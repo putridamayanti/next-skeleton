@@ -10,11 +10,16 @@ import {
     styled,
     Typography
 } from "@mui/material";
-import {useState} from "react";
+import {useEffect, useRef, useState} from "react";
 import {useFormik} from "formik";
 import Image from "next/image";
 import {ErrorRounded} from "@mui/icons-material";
 import CustomTextField from "components/form/CustomTextField";
+import {useSelector} from "store";
+import CountrySelect from "components/form/country/CountrySelect";
+import StateSelect from "components/form/country/StateSelect";
+import CitySelect from "components/form/country/CitySelect";
+import PhoneInput from "components/form/PhoneInput";
 
 const initialData = {
     state: '',
@@ -30,13 +35,6 @@ const initialData = {
     organization: 'Pixinvent',
     email: 'john.doe@example.com'
 }
-
-// const ImgStyled = styled('img')(({ theme }) => ({
-//     width: 100,
-//     height: 100,
-//     marginRight: theme.spacing(6),
-//     borderRadius: theme.shape.borderRadius
-// }))
 
 const ButtonStyled = styled(Button)(({ theme }) => ({
     [theme.breakpoints.down('sm')]: {
@@ -56,6 +54,8 @@ const ResetButtonStyled = styled(Button)(({ theme }) => ({
 }))
 
 export default function ProfileForm() {
+    const profile = useSelector(state => state.profile);
+
     const [open, setOpen] = useState(false)
     const [inputValue, setInputValue] = useState('')
     const [userInput, setUserInput] = useState('yes')
@@ -63,8 +63,22 @@ export default function ProfileForm() {
     const [imgSrc, setImgSrc] = useState('/images/avatar.svg')
     const [secondDialogOpen, setSecondDialogOpen] = useState(false)
 
+    const mounted = useRef(false);
+    useEffect(() => {
+        if (!mounted.current) {
+            if (profile?.image !== '') {
+                setImgSrc(profile.image);
+            }
+        }
+    }, []);
+
     const formik = useFormik({
-        initialValues: initialData,
+        initialValues: {
+            ...profile,
+            country: 'IDN',
+            state: 'BA',
+            city: 'Banjar'
+        },
         onSubmit: values => handleSubmit(values)
     });
 
@@ -105,7 +119,6 @@ export default function ProfileForm() {
 
     return (
         <Grid2 container spacing={6}>
-            {/* Account Details Card */}
             <Grid2 item xs={12}>
                 <Card>
                     <CardHeader title='Profile Details' />
@@ -118,7 +131,7 @@ export default function ProfileForm() {
                                     src={imgSrc}
                                     alt={'profile'}
                                     style={{
-                                        borderRadius: 2,
+                                        borderRadius: 80,
                                         background: '#FFFFFF'
                                     }}/>
                                 <div>
@@ -146,19 +159,11 @@ export default function ProfileForm() {
                                 <Grid2 size={{ xs: 12, sm: 6, lg: 6 }}>
                                     <CustomTextField
                                         fullWidth
+                                        name="name"
                                         label='First Name'
                                         placeholder='John'
-                                        value={formData.firstName}
-                                        onChange={e => handleFormChange('firstName', e.target.value)}
-                                    />
-                                </Grid2>
-                                <Grid2 size={{ xs: 12, sm: 6, lg: 6 }}>
-                                    <CustomTextField
-                                        fullWidth
-                                        label='Last Name'
-                                        placeholder='Doe'
-                                        value={formData.lastName}
-                                        onChange={e => handleFormChange('lastName', e.target.value)}
+                                        value={formik.values.name}
+                                        onChange={formik.handleChange}
                                     />
                                 </Grid2>
                                 <Grid2 size={{ xs: 12, sm: 6, lg: 6 }}>
@@ -166,18 +171,9 @@ export default function ProfileForm() {
                                         fullWidth
                                         type='email'
                                         label='Email'
-                                        value={formData.email}
+                                        value={formik.values.name}
                                         placeholder='john.doe@example.com'
-                                        onChange={e => handleFormChange('email', e.target.value)}
-                                    />
-                                </Grid2>
-                                <Grid2 size={{ xs: 12, sm: 6, lg: 6 }}>
-                                    <CustomTextField
-                                        fullWidth
-                                        label='Organization'
-                                        placeholder='Pixinvent'
-                                        value={formData.organization}
-                                        onChange={e => handleFormChange('organization', e.target.value)}
+                                        onChange={formik.handleChange}
                                     />
                                 </Grid2>
                                 <Grid2 size={{ xs: 12, sm: 6, lg: 6 }}>
@@ -187,9 +183,29 @@ export default function ProfileForm() {
                                         label='Phone Number'
                                         value={formData.number}
                                         placeholder='202 555 0111'
-                                        onChange={e => handleFormChange('number', e.target.value)}
+                                        onChange={formik.handleChange}
                                         InputProps={{ startAdornment: <InputAdornment position='start'>US (+1)</InputAdornment> }}
                                     />
+                                </Grid2>
+                                <Grid2 size={{ xs: 12, sm: 6, lg: 6 }}>
+                                    <CountrySelect
+                                        label="Country"
+                                        onChange={(val) => formik.setFieldValue('country', val)}
+                                        value={formik.values.country}/>
+                                </Grid2>
+                                <Grid2 size={{ xs: 12, sm: 6, lg: 6 }}>
+                                    <StateSelect
+                                        label="State"
+                                        country={formik.values.country}
+                                        onChange={(val) => formik.setFieldValue('state', val)}
+                                        value={formik.values.state}/>
+                                </Grid2>
+                                <Grid2 size={{ xs: 12, sm: 6, lg: 6 }}>
+                                    <CitySelect
+                                        label="City"
+                                        state={formik.values.state}
+                                        onChange={(val) => formik.setFieldValue('city', val)}
+                                        value={formik.values.city}/>
                                 </Grid2>
                                 <Grid2 size={{ xs: 12, sm: 6, lg: 6 }}>
                                     <CustomTextField
@@ -197,17 +213,13 @@ export default function ProfileForm() {
                                         label='Address'
                                         placeholder='Address'
                                         value={formData.address}
-                                        onChange={e => handleFormChange('address', e.target.value)}
+                                        onChange={formik.handleChange}
                                     />
                                 </Grid2>
                                 <Grid2 size={{ xs: 12, sm: 6, lg: 6 }}>
-                                    <CustomTextField
-                                        fullWidth
-                                        label='State'
-                                        placeholder='California'
-                                        value={formData.state}
-                                        onChange={e => handleFormChange('state', e.target.value)}
-                                    />
+                                    <PhoneInput
+                                        onChange={(val) => formik.setFieldValue('phone', val)}
+                                        value="IDN"/>
                                 </Grid2>
                                 <Grid2 size={{ xs: 12, sm: 6, lg: 6 }}>
                                     <CustomTextField
@@ -216,7 +228,7 @@ export default function ProfileForm() {
                                         label='Zip Code'
                                         placeholder='231465'
                                         value={formData.zipCode}
-                                        onChange={e => handleFormChange('zipCode', e.target.value)}
+                                        onChange={formik.handleChange}
                                     />
                                 </Grid2>
                                 <Grid2 size={{ xs: 12, sm: 6, lg: 6 }}>

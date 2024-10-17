@@ -1,25 +1,26 @@
 'use client'
 
 import {useState} from "react";
-import {Box, CircularProgress, Grid2, styled, Tab, Typography, useMediaQuery} from "@mui/material";
-import MuiTabList from '@mui/lab/TabList'
-import {useRouter} from "next/navigation";
+import {
+    ConnectWithoutContactRounded,
+    CreditCardRounded,
+    PersonRounded,
+    SecurityRounded,
+    StorageRounded
+} from "@mui/icons-material";
 import ProfileForm from "components/pages/profile/update/ProfileForm";
 import SecurityForm from "components/pages/profile/update/SecurityForm";
-import ConnectionForm from "components/pages/profile/update/ConnectionForm";
-import {TabContext, TabPanel} from "@mui/lab";
-import {ConnectWithoutContactRounded, PersonRounded, SecurityRounded} from "@mui/icons-material";
-import {Component} from "react";
-import {useSelector} from "store";
+import {Box, Grid2, Tab} from "@mui/material";
+import {TabContext, TabList, TabPanel} from "@mui/lab";
 import CustomTabList from "components/CustomTabList";
+import StorageForm from "components/pages/configuration/StorageForm";
 
-export default function Update() {
+export default function Configuration() {
     const [activeTab, setActiveTab] = useState(0)
 
     const tabs = [
-        {label: 'Profile', icon: PersonRounded, panel: <ProfileForm/>},
-        {label: 'Security', icon: SecurityRounded, panel: <SecurityForm/>},
-        {label: 'Connections', icon: ConnectWithoutContactRounded, panel: <ConnectionForm/>},
+        {label: 'Storage', icon: StorageRounded, panel: <StorageForm/>},
+        {label: 'Payment', icon: CreditCardRounded, panel: <SecurityForm/>},
     ];
 
     return (
@@ -32,8 +33,7 @@ export default function Update() {
                                 variant='scrollable'
                                 scrollButtons='auto'
                                 onChange={(e, val) => setActiveTab(val)}
-                                aria-label='customized tabs example'
-                            >
+                                aria-label='customized tabs example'>
                                 {tabs.map(({icon: Component, ...item}, i) => (
                                     <Tab
                                         key={i}

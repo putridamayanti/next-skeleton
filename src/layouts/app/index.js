@@ -1,9 +1,15 @@
-import {Box, styled} from "@mui/material";
+import {Box, CircularProgress, Stack, styled, useTheme} from "@mui/material";
 import {useState} from "react";
 import AppNavbar from "layouts/app/components/navbar";
 import Sidebar from "layouts/app/components/sidebar";
 import {useDispatch, useSelector} from "store";
 import {ThemeActions} from "store/slices/ThemeSlice";
+import useProfile from "hooks/useProfile";
+
+const LoadingWrapper = styled(Stack)(() => ({
+    width: '100vw',
+    height: '100vh'
+}));
 
 const LayoutWrapper = styled(Box)(({ theme }) => ({
     height: '100%',
@@ -11,19 +17,25 @@ const LayoutWrapper = styled(Box)(({ theme }) => ({
     backgroundColor: theme.palette.background.default
 }));
 
-const MainContentWrapper = styled(Box)(({ theme }) => ({
+const MainContentWrapper = styled(Box)(({ theme, isSidebarCollapsed }) => ({
     flexGrow: 1,
     minWidth: 0,
+    width: isSidebarCollapsed ? '100vw' : '100%',
     display: 'flex',
     minHeight: '100vh',
-    flexDirection: 'column'
+    flexDirection: 'column',
+    transition: theme.transitions.create(['margin', 'width'], {
+        easing: theme.transitions.easing.sharp,
+        duration: theme.transitions.duration.leavingScreen,
+    }),
 }));
 
 const ContentWrapper = styled('main')(({ theme }) => ({
     flexGrow: 1,
     width: '100%',
+    marginRight: 'auto',
     padding: theme.spacing(6),
-    transition: 'padding .25s ease-in-out',
+
     [theme.breakpoints.down('sm')]: {
         paddingLeft: theme.spacing(4),
         paddingRight: theme.spacing(4)
@@ -33,22 +45,30 @@ const ContentWrapper = styled('main')(({ theme }) => ({
 export default function AppLayout(props) {
     const { children } = props;
     const { isSidebarCollapsed } = useSelector(state => state.theme);
+    const { id } = useSelector(state => state.profile);
     const dispatch = useDispatch();
+    const profile = useProfile();
+
     const toggleNavVisibility = () => dispatch(ThemeActions.setSidebarCollapse(!isSidebarCollapsed));
-    const contentHeightFixed = true;
+
+    if (!id) {
+        return (
+            <LoadingWrapper justifyContent="center" alignItems="center">
+                <CircularProgress/>
+            </LoadingWrapper>
+        )
+    }
 
     return (
         <>
             <LayoutWrapper>
                 <Sidebar/>
-                <MainContentWrapper
-                    sx={{
-                        ...(contentHeightFixed && { maxHeight: '100vh' }),
-                        ...(isSidebarCollapsed && { width: '100vw' }),
+                <MainContentWrapper>
+                    <AppNavbar toggleNavVisibility={toggleNavVisibility}/>
+                    <ContentWrapper sx={{
+                        ...(isSidebarCollapsed && { width: '100vw' })
                     }}>
-                    <AppNavbar
-                        toggleNavVisibility={toggleNavVisibility}/>
-                    <ContentWrapper>
+                        <Box height={80}/>
                         {children}
                     </ContentWrapper>
                 </MainContentWrapper>

@@ -2,6 +2,7 @@ import {createSlice} from "@reduxjs/toolkit";
 
 const initialState = {
     mode: 'light',
+    breakpoints: 'lg',
     isSidebarCollapsed: false,
     sidebarWidth: 260,
     sidebarIconWidth: 35,

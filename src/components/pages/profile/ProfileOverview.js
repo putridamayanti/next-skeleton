@@ -1,4 +1,12 @@
 import {Box, Card, CardContent, Grid2, Stack, Typography} from "@mui/material";
+import {
+    CheckRounded,
+    DesignServicesRounded,
+    MailRounded,
+    MapRounded,
+    PeopleRounded,
+    PhoneRounded
+} from "@mui/icons-material";
 
 const data = {
     about: [
@@ -93,6 +101,31 @@ const data = {
     ]
 };
 
+const renderItem = ({icon: Component, ...item}) => {
+    return (
+        <Box
+            sx={{
+                display: 'flex',
+                '&:not(:last-of-type)': { mb: 3 },
+                '& svg': { color: 'text.secondary' }
+            }}
+        >
+            <Box sx={{ display: 'flex', mr: 2 }}>
+                <Component/>
+            </Box>
+
+            <Box sx={{ columnGap: 2, display: 'flex', flexWrap: 'wrap', alignItems: 'center' }}>
+                <Typography sx={{ fontWeight: 500, color: 'text.secondary' }}>
+                    {item.label}:
+                </Typography>
+                <Typography sx={{ color: 'text.secondary' }}>
+                    {item.value.charAt(0).toUpperCase() + item.value.slice(1)}
+                </Typography>
+            </Box>
+        </Box>
+    )
+};
+
 const renderList = arr => {
     if (arr && arr.length) {
         return arr.map(({icon: Component, ...item}, index) => {
@@ -126,6 +159,7 @@ const renderList = arr => {
 }
 
 export default function ProfileOverview(props) {
+    const { profile } = props;
     const { about, contacts, overview } = data
 
     return (
@@ -136,13 +170,18 @@ export default function ProfileOverview(props) {
                         <Typography variant='body2' sx={{ mb: 4, color: 'text.disabled', textTransform: 'uppercase' }}>
                             About
                         </Typography>
+                        {renderItem({icon: PeopleRounded, label: 'Full Name', value: profile.name})}
+                        {renderItem({icon: CheckRounded, label: 'Status', value: profile.status ? 'Active' : 'Inactive'})}
+                        {renderItem({icon: DesignServicesRounded, label: 'Role', value: profile.status ? 'Active' : 'Inactive'})}
+                        {renderItem({icon: MapRounded, label: 'Country', value: profile.status ? 'Active' : 'Inactive'})}
                         {renderList(about)}
                     </Box>
                     <Box sx={{ mb: 6 }}>
                         <Typography variant='body2' sx={{ mb: 4, color: 'text.disabled', textTransform: 'uppercase' }}>
                             Contacts
                         </Typography>
-                        {renderList(contacts)}
+                        {renderItem({icon: PhoneRounded, label: 'Contact', value: profile.phone})}
+                        {renderItem({icon: MailRounded, label: 'Email', value: profile.email})}
                     </Box>
                 </CardContent>
             </Card>
